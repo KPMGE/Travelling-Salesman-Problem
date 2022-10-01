@@ -32,6 +32,16 @@ void *treeNode_free(TreeNode *t){
   }
 }
 
-City *return_city(TreeNode *tree){
-
+City *return_origin(TreeNode *t){
+  return t->origin;
 }
+
+City *return_destination(TreeNode *t){
+  return t->destination;
+}
+
+double return_distance(TreeNode *t){
+  return t->distance;
+}
+
+// RETURN CHILDREN
