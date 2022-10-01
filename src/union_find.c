@@ -7,7 +7,7 @@ struct uf_node {
   int depth;
 };
 
-UfNode *uf_init(void *value) {
+UfNode *uf_set_new(void *value) {
   UfNode *singleton = malloc(sizeof(UfNode));
   singleton->value = value;
   singleton->depth = 1;
