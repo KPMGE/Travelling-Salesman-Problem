@@ -23,11 +23,6 @@ int main(int argc, char *argv[])
     }
     fclose(f);
 
-    //impriindo as cidades para ver se ta tudo certo
-    
-    for (int j = 0; j < dimension; j++)
-        printf("%d %.2f %.2f\n", cities[j]->id, cities[j]->x, cities[j]->y);
-
     for (int i = 0; i < dimension; i++)
         free(cities[i]);
 
