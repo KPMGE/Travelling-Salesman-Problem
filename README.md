@@ -10,4 +10,4 @@
 ### Steps
 - [ ] Read **.tsp** file and save it to an array of Cities.
 - [ ] Create array of **TreeNode** with the distances between all cities.
-- [ ] Create **UnionFind** TAD.
+- [x] Create **UnionFind** TAD.
