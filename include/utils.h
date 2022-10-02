@@ -10,5 +10,6 @@ size_t parse_dimension(FILE *f);
 Edge **compute_edges(City **cities, size_t qtd_cities);
 void cities_free(City **cities, size_t qtd_cities);
 void edges_free(Edge **edges, size_t qtd_edges);
+void sort_edges(Edge **edges, size_t qtd_edges);
 
 #endif // !UTILS_H

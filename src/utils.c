@@ -4,6 +4,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+static int compare_edges_by_distance(const void *a, const void *b) {
+  Edge *e1 = *(Edge **)a;
+  Edge *e2 = *(Edge **)b;
+  const double d1 = edge_distance(e1);
+  const double d2 = edge_distance(e2);
+  if (d1 > d2)
+    return 1;
+  if (d1 == d2)
+    return 0;
+  return -1;
+}
+
 static void skip_lines(FILE *f, size_t n) {
   for (int i = 0; i < n; i++) {
     char buffer[100];
@@ -44,11 +56,11 @@ size_t parse_dimension(FILE *f) {
   return dimension;
 }
 
-void cities_free(City **cities, size_t qtd_cities) {
-  for (size_t i = 0; i < qtd_cities; i++) {
-    city_free(cities[i]);
-  }
-  free(cities);
+void sort_edges(Edge **edges, size_t qtd_edges) {
+  // as the size of pointers in C is always the same, and we're expecting a
+  // ponter to edge, its fine to use it like this!
+  const size_t pointer_size = sizeof(void *);
+  qsort(edges, qtd_edges, pointer_size, compare_edges_by_distance);
 }
 
 Edge **compute_edges(City **cities, size_t qtd_cities) {
@@ -71,6 +83,13 @@ Edge **compute_edges(City **cities, size_t qtd_cities) {
   }
 
   return edges;
+}
+
+void cities_free(City **cities, size_t qtd_cities) {
+  for (size_t i = 0; i < qtd_cities; i++) {
+    city_free(cities[i]);
+  }
+  free(cities);
 }
 
 void edges_free(Edge **edges, size_t qtd_edges) {
