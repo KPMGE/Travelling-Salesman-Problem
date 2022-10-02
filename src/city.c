@@ -14,6 +14,12 @@ City *city_new(size_t id, double x, double y) {
   return c;
 }
 
+size_t city_id(City *c) { return c->id; }
+
+double city_x(City *c) { return c->x; }
+
+double city_y(City *c) { return c->y; }
+
 size_t return_dimension(FILE *f) {
   int dimension;
   for (int i = 0; i < 6; i++) {
