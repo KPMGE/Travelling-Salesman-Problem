@@ -1,4 +1,5 @@
 #include "../include/utils.h"
+#include "../include/city.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -40,4 +41,11 @@ size_t parse_dimension(FILE *f) {
   // sets the pointer back to the very top of the file
   fseek(f, 0L, SEEK_SET);
   return dimension;
+}
+
+void cities_free(City **cities, size_t qtd_cities) {
+  for (size_t i = 0; i < qtd_cities; i++) {
+    city_free(cities[i]);
+  }
+  free(cities);
 }
