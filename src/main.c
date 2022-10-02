@@ -6,18 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void save_mst(FILE *f, Edge **mst, size_t dimension) {
-  fprintf(f, "NAME: berlin52\n");
-  fprintf(f, "TYPE: MST\n");
-  fprintf(f, "DIMENSION: %zu\n", dimension);
-  fprintf(f, "MST_SECTION\n");
-  for (size_t i = 0; i < dimension; i++) {
-    fprintf(f, "%zu %zu\n", city_id(edge_origin(mst[i])),
-            city_id(edge_destination(mst[i])));
-  }
-  fprintf(f, "EOF");
-}
-
 int main(int argc, char *argv[]) {
   const char *file_path = argv[1];
   FILE *f = fopen(file_path, "r");
@@ -39,10 +27,12 @@ int main(int argc, char *argv[]) {
 
   FILE *mst_file = fopen("test.mst", "w");
   assert(f != NULL && "Could not create mst file");
-  save_mst(mst_file, mst, dim);
+  char *problem_name = parse_problem_name(f);
+  save_mst(mst_file, mst, problem_name, dim);
 
   // clean up memorry
   fclose(f);
+  free(problem_name);
   fclose(mst_file);
   cities_free(cities, dim);
   edges_free(edges, qtd_edges);

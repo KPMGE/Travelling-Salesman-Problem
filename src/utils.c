@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 static int compare_edges_by_distance(const void *a, const void *b) {
   Edge *e1 = *(Edge **)a;
@@ -24,6 +25,14 @@ static void skip_lines(FILE *f, size_t n) {
   }
 }
 
+char *parse_problem_name(FILE *f) {
+  char name[256];
+  fscanf(f, "NAME: %s", name);
+  // sets the pointer back to the very top of the file
+  fseek(f, 0L, SEEK_SET);
+  return strdup(name);
+}
+
 City **parse_cities(FILE *f) {
   const size_t dimension = parse_dimension(f);
   const int cities_start_pos = 6;
@@ -41,6 +50,8 @@ City **parse_cities(FILE *f) {
     i++;
   }
 
+  // sets the pointer back to the very top of the file
+  fseek(f, 0L, SEEK_SET);
   return cities;
 }
 
@@ -125,4 +136,16 @@ Edge **kruskal(size_t vertices, Edge **edges, size_t qtd_edges) {
   uf_free(uf_set);
 
   return mst;
+}
+
+void save_mst(FILE *f, Edge **mst, const char *problem_name, size_t dimension) {
+  fprintf(f, "NAME: %s\n", problem_name);
+  fprintf(f, "TYPE: MST\n");
+  fprintf(f, "DIMENSION: %zu\n", dimension);
+  fprintf(f, "MST_SECTION\n");
+  for (size_t i = 0; i < dimension; i++) {
+    fprintf(f, "%zu %zu\n", city_id(edge_origin(mst[i])),
+            city_id(edge_destination(mst[i])));
+  }
+  fprintf(f, "EOF");
 }

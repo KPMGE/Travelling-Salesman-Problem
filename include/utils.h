@@ -12,5 +12,7 @@ void cities_free(City **cities, size_t qtd_cities);
 void edges_free(Edge **edges, size_t qtd_edges);
 void sort_edges(Edge **edges, size_t qtd_edges);
 Edge **kruskal(size_t vertices, Edge **edges, size_t qtd_edges);
+void save_mst(FILE *f, Edge **mst, const char *problem_name, size_t dimension);
+char *parse_problem_name(FILE *f);
 
 #endif // !UTILS_H
