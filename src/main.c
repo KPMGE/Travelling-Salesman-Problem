@@ -1,27 +1,23 @@
 #include "../include/city.h"
 #include "../include/union_find.h"
 #include "../include/utils.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-  FILE *f = fopen("../exemplos/in/a280.tsp", "r");
+  const char *file_path = argv[1];
+  FILE *f = fopen(file_path, "r");
+  assert(f != NULL && "Could not open file");
 
-  int id, dimension;
-  float x, y;
+  size_t dim = parse_dimension(f);
+  printf("dimension: %zu\n", dim);
+  City **cities = parse_cities(f);
 
-  // skip lines and return dimension
-  dimension = return_dimension(f);
-
-  City *cities[dimension]; // array of cities
-
-  int i = 0;
-  while (fscanf(f, "%d %f %f", &id, &x, &y) == 3) {
-    cities[i] = city_new(id, x, y);
-    i++;
+  for (size_t i = 0; i < dim; i++) {
+    printf("id: %zu, x: %.2lf, y: %.2lf\n", city_id(cities[i]),
+           city_x(cities[i]), city_y(cities[i]));
   }
-  fclose(f);
 
-  for (int i = 0; i < dimension; i++)
-    free(cities[i]);
+  fclose(f);
 }

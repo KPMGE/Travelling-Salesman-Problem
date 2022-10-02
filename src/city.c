@@ -19,3 +19,5 @@ size_t city_id(City *c) { return c->id; }
 double city_x(City *c) { return c->x; }
 
 double city_y(City *c) { return c->y; }
+
+size_t city_size() { return sizeof(City); }
