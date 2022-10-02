@@ -13,3 +13,18 @@ City *city_new(int id, double x, double y) {
   c->y = y;
   return c;
 }
+
+int return_dimension(FILE *f) {
+  int dimension;
+  for (int i = 0; i < 6; i++) {
+    // go to the line where we have the dimension and get the value
+    if (i == 3) {
+      fscanf(f, "DIMENSION: %d\n", &dimension);
+      continue;
+    }
+    char buffer[100];
+    fgets(buffer, 100, f);
+  }
+
+  return dimension;
+}
