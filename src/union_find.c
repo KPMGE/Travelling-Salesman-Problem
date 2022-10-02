@@ -49,3 +49,9 @@ void uf_union(Uf *uf, size_t pos1, size_t pos2) {
 bool uf_connected(Uf *uf, size_t pos1, size_t pos2) {
   return uf_find(uf, pos1) == uf_find(uf, pos2);
 }
+
+void uf_free(Uf *uf) {
+  free(uf->ids);
+  free(uf->sizes);
+  free(uf);
+}

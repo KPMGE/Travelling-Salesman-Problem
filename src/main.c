@@ -24,6 +24,4 @@ int main(int argc, char *argv[]) {
 
   for (int i = 0; i < dimension; i++)
     free(cities[i]);
-
-  return 0;
 }
