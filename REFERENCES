@@ -2,3 +2,4 @@ trim function: https://stackoverflow.com/questions/656542/trim-a-string-in-c
 union-find implementation in c: https://github.com/luistar/union-find-c
 disjoint datastructure: https://en.wikipedia.org/wiki/Disjoint-set_data_structure
 kruskal algorithm: https://en.wikipedia.org/wiki/Kruskal%27s_algorithm#Example
+kruskal algorithm: https://www.simplilearn.com/tutorials/data-structure-tutorial/kruskal-algorithm#:~:text=Kruskal's%20algorithm%20is%20the%20concept,node%20as%20a%20separate%20tree.
