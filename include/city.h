@@ -13,5 +13,6 @@ double city_x(City *c);
 double city_y(City *c);
 size_t city_size();
 void city_free(City *c);
+double city_calculate_distance(City *c1, City *c2);
 
 #endif // !CITY_H
