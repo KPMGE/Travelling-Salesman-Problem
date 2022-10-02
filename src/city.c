@@ -19,18 +19,3 @@ size_t city_id(City *c) { return c->id; }
 double city_x(City *c) { return c->x; }
 
 double city_y(City *c) { return c->y; }
-
-size_t return_dimension(FILE *f) {
-  int dimension;
-  for (int i = 0; i < 6; i++) {
-    // go to the line where we have the dimension and get the value
-    if (i == 3) {
-      fscanf(f, "DIMENSION: %d\n", &dimension);
-      continue;
-    }
-    char buffer[100];
-    fgets(buffer, 100, f);
-  }
-
-  return dimension;
-}
