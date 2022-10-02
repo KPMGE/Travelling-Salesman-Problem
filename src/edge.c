@@ -24,3 +24,5 @@ City *edge_destination(Edge *e) { return e->destination; }
 double edge_distance(Edge *e) { return e->distance; }
 
 void edge_free(Edge *e) { free(e); }
+
+size_t edge_size() { return sizeof(Edge); }

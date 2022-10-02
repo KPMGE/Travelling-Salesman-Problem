@@ -10,17 +10,30 @@ int main(int argc, char *argv[]) {
   FILE *f = fopen(file_path, "r");
   assert(f != NULL && "Could not open file");
 
+  // dimension of the matrix
   size_t dim = parse_dimension(f);
   printf("dimension: %zu\n", dim);
+  // get all cities
   City **cities = parse_cities(f);
+  // compute the edges between all cities
+  Edge **edges = compute_edges(cities, dim);
+  // obtain the actual amount of edges
+  size_t dim2 = dim - 1;
+  size_t qtd_edges = (dim2 * (dim2 + 1)) / 2;
 
-  for (size_t i = 0; i < dim; i++) {
-    printf("id: %zu, x: %.2lf, y: %.2lf\n", city_id(cities[i]),
-           city_x(cities[i]), city_y(cities[i]));
+  // display edges
+  for (size_t i = 0; i < qtd_edges; i++) {
+    size_t origin_id = city_id(edge_origin(edges[i]));
+    size_t destination_id = city_id(edge_destination(edges[i]));
+    double distance = edge_distance(edges[i]);
+    printf("origin: %zu, destination: %zu, distance: %.2lf\n", origin_id,
+           destination_id, distance);
   }
 
+  // clean up memorry
   fclose(f);
   cities_free(cities, dim);
+  edges_free(edges, qtd_edges);
 }
 
 // typedef struct {

@@ -1,5 +1,6 @@
 #include "../include/utils.h"
 #include "../include/city.h"
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -48,4 +49,33 @@ void cities_free(City **cities, size_t qtd_cities) {
     city_free(cities[i]);
   }
   free(cities);
+}
+
+Edge **compute_edges(City **cities, size_t qtd_cities) {
+  assert(cities != NULL && "Cities must not be null");
+
+  // formula for the sum of the first n natural numbers
+  // NOTE: the actual number that we wanna compute is the sum of (qtd_cities -
+  // 1)
+  size_t n = qtd_cities - 1;
+  size_t qtd_edges = (n * (n + 1)) / 2;
+  size_t k = 0;
+
+  Edge **edges = malloc(edge_size() * qtd_edges);
+
+  for (size_t i = 0; i < qtd_cities; i++) {
+    for (size_t j = i + 1; j < qtd_cities; j++) {
+      double distance = city_calculate_distance(cities[i], cities[j]);
+      edges[k++] = edge_new(cities[i], cities[j], distance);
+    }
+  }
+
+  return edges;
+}
+
+void edges_free(Edge **edges, size_t qtd_edges) {
+  for (size_t i = 0; i < qtd_edges; i++) {
+    edge_free(edges[i]);
+  }
+  free(edges);
 }
