@@ -27,6 +27,6 @@ void city_free(City *c) { free(c); }
 
 double city_calculate_distance(City *c1, City *c2) {
   double dx = c2->x - c1->x;
-  double dy = c2->y - c1->x;
+  double dy = c2->y - c1->y;
   return sqrt(pow(dx, 2) + pow(dy, 2));
 }
