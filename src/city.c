@@ -2,11 +2,11 @@
 #include <stdlib.h>
 
 struct city {
-  int id;
+  size_t id;
   double x, y;
 };
 
-City *city_new(int id, double x, double y) {
+City *city_new(size_t id, double x, double y) {
   City *c = malloc(sizeof(City));
   c->id = id;
   c->x = x;
@@ -14,7 +14,7 @@ City *city_new(int id, double x, double y) {
   return c;
 }
 
-int return_dimension(FILE *f) {
+size_t return_dimension(FILE *f) {
   int dimension;
   for (int i = 0; i < 6; i++) {
     // go to the line where we have the dimension and get the value
