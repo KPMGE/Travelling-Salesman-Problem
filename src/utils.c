@@ -1,5 +1,6 @@
 #include "../include/utils.h"
 #include "../include/city.h"
+#include "../include/union_find.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -97,4 +98,31 @@ void edges_free(Edge **edges, size_t qtd_edges) {
     edge_free(edges[i]);
   }
   free(edges);
+}
+
+Edge **kruskal(size_t vertices, Edge **edges, size_t qtd_edges) {
+  Uf *uf_set = uf_init(vertices);
+  Edge **mst = malloc(edge_size() * vertices);
+  size_t e = 0, i = 0;
+
+  // evaluate until we got a complete tree or there is no elements left
+  while (i < qtd_edges) {
+    Edge *next_edge = edges[i++];
+
+    // as the ids on the file start with 1, but on Uf we use an array starting
+    // with 0, we must adjust the value before using find/union operations
+    size_t id1_adjusted = city_id(edge_origin(next_edge)) - 1;
+    size_t id2_adjusted = city_id(edge_destination(next_edge)) - 1;
+    size_t pos1 = uf_find(uf_set, id1_adjusted);
+    size_t pos2 = uf_find(uf_set, id2_adjusted);
+
+    if (!uf_connected(uf_set, pos1, pos2)) {
+      mst[e++] = next_edge;
+      uf_union(uf_set, pos1, pos2);
+    }
+  }
+
+  uf_free(uf_set);
+
+  return mst;
 }
