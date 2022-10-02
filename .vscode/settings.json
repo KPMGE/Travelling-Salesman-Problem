@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "city.h": "c",
+        "stdio.h": "c"
+    }
+}
