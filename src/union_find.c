@@ -1,52 +1,51 @@
 #include "../include/union_find.h"
 #include <stdlib.h>
 
-struct uf_node {
-  struct uf_node *parent;
-  void *value;
-  int depth;
+struct uf {
+  size_t *ids;
+  size_t *sizes;
 };
 
-UfNode *uf_set_new(void *value) {
-  UfNode *singleton = malloc(sizeof(UfNode));
-  singleton->value = value;
-  singleton->depth = 1;
-  singleton->parent = NULL;
-  return singleton;
-}
+Uf *uf_init(size_t sz) {
+  Uf *uf = malloc(sizeof(Uf));
 
-UfNode *uf_find(UfNode *elem) {
-  if (!elem)
-    return NULL;
+  uf->sizes = calloc(sz, sizeof(size_t));
+  uf->ids = malloc(sizeof(size_t) * sz);
 
-  UfNode *original = elem;
-  // find the root
-  while (elem->parent) {
-    elem = elem->parent;
+  for (size_t i = 0; i < sz; i++) {
+    uf->ids[i] = i;
   }
 
-  if (elem != original->parent && elem != original) {
-    original->parent = elem; // path compression
-  }
-
-  return elem;
+  return uf;
 }
 
-UfNode *uf_union(UfNode *a, UfNode *b) {
-  UfNode *root_a = uf_find(a);
-  UfNode *root_b = uf_find(b);
-  UfNode *newroot = root_a;
-  if (root_a != root_b) {
-    if (root_a->depth > root_b->depth) { // merge by rank
-      root_b->parent = root_a;
-      root_a->depth++;
-    } else {
-      root_a->parent = root_b;
-      root_b->depth++;
-      newroot = root_b;
-    }
+size_t uf_find(Uf *uf, size_t pos) {
+  size_t *ids = uf->ids;
+  while (pos != ids[pos]) {
+    ids[pos] = ids[ids[pos]];
+    pos = ids[pos];
   }
-  return newroot;
+  return pos;
 }
 
-bool uf_connected(UfNode *a, UfNode *b) { return uf_find(a) == uf_find(b); }
+void uf_union(Uf *uf, size_t pos1, size_t pos2) {
+  size_t idx1 = uf_find(uf, pos1);
+  size_t idx2 = uf_find(uf, pos2);
+
+  size_t *sizes = uf->sizes;
+  size_t *ids = uf->ids;
+
+  if (idx1 == idx2)
+    return;
+  if (sizes[idx1] < sizes[idx2]) {
+    ids[idx1] = idx2;
+    sizes[idx2] += sizes[idx1];
+  } else {
+    ids[idx2] = idx1;
+    sizes[idx1] += sizes[idx2];
+  }
+}
+
+bool uf_connected(Uf *uf, size_t pos1, size_t pos2) {
+  return uf_find(uf, pos1) == uf_find(uf, pos2);
+}

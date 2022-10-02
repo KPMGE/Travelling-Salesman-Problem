@@ -5,11 +5,11 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-typedef struct uf_node UfNode;
+typedef struct uf Uf;
 
-UfNode *uf_set_new(void *value);
-UfNode *uf_find(UfNode *uf);
-UfNode *uf_union(UfNode *a, UfNode *b);
-bool uf_connected(UfNode *a, UfNode *b);
+Uf *uf_init(size_t sz);
+size_t uf_find(Uf *uf, size_t pos);
+void uf_union(Uf *uf, size_t pos1, size_t pos2);
+bool uf_connected(Uf *uf, size_t pos1, size_t pos2);
 
 #endif // !UNION_FIND_H
