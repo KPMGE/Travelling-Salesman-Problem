@@ -3,3 +3,6 @@ union-find implementation in c: https://github.com/luistar/union-find-c
 disjoint datastructure: https://en.wikipedia.org/wiki/Disjoint-set_data_structure
 kruskal algorithm: https://en.wikipedia.org/wiki/Kruskal%27s_algorithm#Example
 kruskal algorithm: https://www.simplilearn.com/tutorials/data-structure-tutorial/kruskal-algorithm#:~:text=Kruskal's%20algorithm%20is%20the%20concept,node%20as%20a%20separate%20tree.
+quick permutations: https://www.baeldung.com/cs/array-generate-all-permutations
+formula of integer sum up to N: https://www.vedantu.com/question-answer/the-formula-of-the-sum-of-first-n-natural-class-11-maths-cbse-5ee862757190f464f77a1c68
+fseek function: https://www.tutorialspoint.com/c_standard_library/c_function_fseek.htm
