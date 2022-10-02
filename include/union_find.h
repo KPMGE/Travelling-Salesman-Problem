@@ -1,7 +1,6 @@
 #ifndef UNION_FIND_H
 #define UNION_FIND_H
 
-#include "tree.h"
 #include <stdbool.h>
 #include <stddef.h>
 
