@@ -117,7 +117,7 @@ Edge **kruskal(size_t vertices, Edge **edges, size_t qtd_edges) {
   size_t e = 0, i = 0;
 
   // evaluate until we got a complete tree or there is no elements left
-  while (i < qtd_edges) {
+  while ((e < (vertices - 1)) && i < qtd_edges) {
     Edge *next_edge = edges[i++];
 
     // as the ids on the file start with 1, but on Uf we use an array starting
