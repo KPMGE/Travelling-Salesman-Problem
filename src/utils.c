@@ -143,7 +143,7 @@ void save_mst(FILE *f, Edge **mst, const char *problem_name, size_t dimension) {
   fprintf(f, "TYPE: MST\n");
   fprintf(f, "DIMENSION: %zu\n", dimension);
   fprintf(f, "MST_SECTION\n");
-  for (size_t i = 0; i < dimension; i++) {
+  for (size_t i = 0; i < dimension - 1; i++) {
     fprintf(f, "%zu %zu\n", city_id(edge_origin(mst[i])),
             city_id(edge_destination(mst[i])));
   }
