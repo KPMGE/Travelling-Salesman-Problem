@@ -26,3 +26,12 @@ double edge_distance(Edge *e) { return e->distance; }
 void edge_free(Edge *e) { free(e); }
 
 size_t edge_size() { return sizeof(Edge); }
+
+Edge **edge_array_new(size_t n) { return malloc(n * sizeof(Edge)); }
+
+void edges_free(Edge **edges, size_t qtd_edges) {
+  for (size_t i = 0; i < qtd_edges; i++) {
+    edge_free(edges[i]);
+  }
+  free(edges);
+}

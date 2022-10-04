@@ -85,7 +85,7 @@ Edge **compute_edges(City **cities, size_t qtd_cities) {
   size_t qtd_edges = (n * (n + 1)) / 2;
   size_t k = 0;
 
-  Edge **edges = malloc(edge_size() * qtd_edges);
+  Edge **edges = edge_array_new(qtd_edges);
 
   for (size_t i = 0; i < qtd_cities; i++) {
     for (size_t j = i + 1; j < qtd_cities; j++) {
@@ -97,16 +97,9 @@ Edge **compute_edges(City **cities, size_t qtd_cities) {
   return edges;
 }
 
-void edges_free(Edge **edges, size_t qtd_edges) {
-  for (size_t i = 0; i < qtd_edges; i++) {
-    edge_free(edges[i]);
-  }
-  free(edges);
-}
-
 Edge **kruskal(size_t vertices, Edge **edges, size_t qtd_edges) {
   Uf *uf_set = uf_init(vertices);
-  Edge **mst = malloc(edge_size() * vertices);
+  Edge **mst = edge_array_new(vertices);
   size_t e = 0, i = 0;
 
   // evaluate until we got a complete tree or there is no elements left
