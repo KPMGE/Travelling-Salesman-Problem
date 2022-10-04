@@ -5,21 +5,21 @@
 #include "../include/edge.h"
 
 struct edge {
-  City *origin, *destination;
+  size_t origin_id, destination_id;
   double distance;
 };
 
-Edge *edge_new(City *origin, City *destination, double distance) {
+Edge *edge_new(size_t origin_id, size_t destination_id, double distance) {
   Edge *e = malloc(sizeof(Edge));
-  e->origin = origin;
-  e->destination = destination;
+  e->origin_id = origin_id;
+  e->destination_id = destination_id;
   e->distance = distance;
   return e;
 }
 
-City *edge_origin(Edge *e) { return e->origin; }
+size_t edge_origin_id(Edge *e) { return e->origin_id; }
 
-City *edge_destination(Edge *e) { return e->destination; }
+size_t edge_destination_id(Edge *e) { return e->destination_id; }
 
 double edge_distance(Edge *e) { return e->distance; }
 

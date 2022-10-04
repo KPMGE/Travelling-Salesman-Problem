@@ -5,9 +5,9 @@
 
 typedef struct edge Edge;
 
-Edge *edge_new(City *origin, City *destination, double distance);
-City *edge_origin(Edge *e);
-City *edge_destination(Edge *e);
+Edge *edge_new(size_t origin_id, size_t destination_id, double distance);
+size_t edge_origin_id(Edge *e);
+size_t edge_destination_id(Edge *e);
 Edge **edge_array_new(size_t n);
 double edge_distance(Edge *e);
 void edge_free(Edge *e);

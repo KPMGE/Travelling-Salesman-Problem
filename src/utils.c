@@ -90,7 +90,7 @@ Edge **compute_edges(City **cities, size_t qtd_cities) {
   for (size_t i = 0; i < qtd_cities; i++) {
     for (size_t j = i + 1; j < qtd_cities; j++) {
       double distance = city_calculate_distance(cities[i], cities[j]);
-      edges[k++] = edge_new(cities[i], cities[j], distance);
+      edges[k++] = edge_new(city_id(cities[i]), city_id(cities[j]), distance);
     }
   }
 
@@ -108,8 +108,8 @@ Edge **kruskal(size_t vertices, Edge **edges, size_t qtd_edges) {
 
     // as the ids on the file start with 1, but on Uf we use an array starting
     // with 0, we must adjust the value before using find/union operations
-    size_t id1_adjusted = city_id(edge_origin(next_edge)) - 1;
-    size_t id2_adjusted = city_id(edge_destination(next_edge)) - 1;
+    size_t id1_adjusted = edge_origin_id(next_edge) - 1;
+    size_t id2_adjusted = edge_destination_id(next_edge) - 1;
     size_t pos1 = uf_find(uf_set, id1_adjusted);
     size_t pos2 = uf_find(uf_set, id2_adjusted);
 
@@ -130,8 +130,8 @@ void save_mst(FILE *f, Edge **mst, const char *problem_name, size_t dimension) {
   fprintf(f, "DIMENSION: %zu\n", dimension);
   fprintf(f, "MST_SECTION\n");
   for (size_t i = 0; i < dimension - 1; i++) {
-    fprintf(f, "%zu %zu\n", city_id(edge_origin(mst[i])),
-            city_id(edge_destination(mst[i])));
+    fprintf(f, "%zu %zu\n", edge_origin_id(mst[i]),
+            edge_destination_id(mst[i]));
   }
   fprintf(f, "EOF");
 }
