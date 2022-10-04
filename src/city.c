@@ -21,12 +21,19 @@ double city_x(City *c) { return c->x; }
 
 double city_y(City *c) { return c->y; }
 
-size_t city_size() { return sizeof(City); }
-
 void city_free(City *c) { free(c); }
 
 double city_calculate_distance(City *c1, City *c2) {
   double dx = c2->x - c1->x;
   double dy = c2->y - c1->y;
   return sqrt(pow(dx, 2) + pow(dy, 2));
+}
+
+City **city_array_new(size_t n) { return malloc(n * sizeof(City)); }
+
+void cities_free(City **cities, size_t qtd_cities) {
+  for (size_t i = 0; i < qtd_cities; i++) {
+    city_free(cities[i]);
+  }
+  free(cities);
 }

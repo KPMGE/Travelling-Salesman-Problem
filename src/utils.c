@@ -41,7 +41,7 @@ City **parse_cities(FILE *f) {
   skip_lines(f, cities_start_pos);
 
   // allocate dynamic array of cities
-  City **cities = malloc(city_size() * dimension);
+  City **cities = city_array_new(dimension);
 
   size_t id, i = 0;
   double x, y;
@@ -95,13 +95,6 @@ Edge **compute_edges(City **cities, size_t qtd_cities) {
   }
 
   return edges;
-}
-
-void cities_free(City **cities, size_t qtd_cities) {
-  for (size_t i = 0; i < qtd_cities; i++) {
-    city_free(cities[i]);
-  }
-  free(cities);
 }
 
 void edges_free(Edge **edges, size_t qtd_edges) {
