@@ -77,11 +77,9 @@ void sort_edges(Edge **edges, size_t qtd_edges) {
 
 Edge **compute_edges(City **cities, uint16_t qtd_cities) {
   assert(cities != NULL && "Cities must not be null");
-
   // formula for the sum of the first n natural numbers
   // NOTE: the actual number that we wanna compute is the sum of (qtd_cities -
   // 1)
-  printf("start compute_edges..\n");
   uint16_t n = qtd_cities - 1;
   size_t qtd_edges = (n * (n + 1)) / 2;
   size_t k = 0;
@@ -98,12 +96,13 @@ Edge **compute_edges(City **cities, uint16_t qtd_cities) {
     }
     city_free(cities[i]);
   }
+  
+  free(cities);
 
   return edges;
 }
 
 Edge **kruskal(uint16_t vertices, Edge **edges, size_t qtd_edges) {
-  printf("start kruskal...\n");
   Uf *uf_set = uf_init(vertices);
   Edge **mst = edge_array_new(vertices);
   size_t i = 0;
