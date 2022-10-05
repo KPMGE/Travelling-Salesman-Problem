@@ -7,10 +7,10 @@
 
 struct edge {
   size_t origin_id, destination_id;
-  double distance;
+  float distance;
 };
 
-Edge *edge_new(size_t origin_id, size_t destination_id, double distance) {
+Edge *edge_new(uint16_t origin_id, uint16_t destination_id, float distance) {
   Edge *e = malloc(sizeof(Edge));
   e->origin_id = origin_id;
   e->destination_id = destination_id;
@@ -18,18 +18,16 @@ Edge *edge_new(size_t origin_id, size_t destination_id, double distance) {
   return e;
 }
 
-size_t edge_origin_id(Edge *e) { return e->origin_id; }
+uint16_t edge_origin_id(Edge *e) { return e->origin_id; }
 
-size_t edge_destination_id(Edge *e) { return e->destination_id; }
+uint16_t edge_destination_id(Edge *e) { return e->destination_id; }
 
-double edge_distance(Edge *e) { return e->distance; }
+float edge_distance(Edge *e) { return e->distance; }
 
 void edge_free(Edge *e) {
   assert(e != NULL && "edge must not be NULL");
   free(e);
 }
-
-size_t edge_size() { return sizeof(Edge); }
 
 Edge **edge_array_new(size_t n) { return malloc(n * sizeof(Edge)); }
 

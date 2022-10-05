@@ -9,8 +9,8 @@
 static int compare_edges_by_distance(const void *a, const void *b) {
   Edge *e1 = *(Edge **)a;
   Edge *e2 = *(Edge **)b;
-  const double d1 = edge_distance(e1);
-  const double d2 = edge_distance(e2);
+  const float d1 = edge_distance(e1);
+  const float d2 = edge_distance(e2);
   if (d1 > d2)
     return 1;
   if (d1 == d2)
@@ -34,8 +34,8 @@ char *parse_problem_name(FILE *f) {
 }
 
 City **parse_cities(FILE *f) {
-  const size_t dimension = parse_dimension(f);
-  const int cities_start_pos = 6;
+  const uint16_t dimension = parse_dimension(f);
+  const uint16_t cities_start_pos = 6;
 
   // skip the lines until the start of the cities data section
   skip_lines(f, cities_start_pos);
@@ -43,9 +43,9 @@ City **parse_cities(FILE *f) {
   // allocate dynamic array of cities
   City **cities = city_array_new(dimension);
 
-  size_t id, i = 0;
-  double x, y;
-  while (fscanf(f, "%zu %lf %lf", &id, &x, &y) == 3) {
+  uint16_t id, i = 0;
+  float x, y;
+  while (fscanf(f, "%hu %f %f", &id, &x, &y) == 3) {
     cities[i] = city_new(id, x, y);
     i++;
   }
@@ -55,14 +55,14 @@ City **parse_cities(FILE *f) {
   return cities;
 }
 
-size_t parse_dimension(FILE *f) {
-  size_t dimension;
-  const int dimension_field_pos = 3;
+uint16_t parse_dimension(FILE *f) {
+  uint16_t dimension;
+  const uint16_t dimension_field_pos = 3;
 
   // skip the lines until the dimension field
   skip_lines(f, dimension_field_pos);
 
-  fscanf(f, "DIMENSION: %zu\n", &dimension);
+  fscanf(f, "DIMENSION: %hu\n", &dimension);
   // sets the pointer back to the very top of the file
   fseek(f, 0L, SEEK_SET);
   return dimension;
@@ -75,32 +75,38 @@ void sort_edges(Edge **edges, size_t qtd_edges) {
   qsort(edges, qtd_edges, pointer_size, compare_edges_by_distance);
 }
 
-Edge **compute_edges(City **cities, size_t qtd_cities) {
+Edge **compute_edges(City **cities, uint16_t qtd_cities) {
   assert(cities != NULL && "Cities must not be null");
 
   // formula for the sum of the first n natural numbers
   // NOTE: the actual number that we wanna compute is the sum of (qtd_cities -
   // 1)
-  size_t n = qtd_cities - 1;
+  printf("start compute_edges..\n");
+  uint16_t n = qtd_cities - 1;
   size_t qtd_edges = (n * (n + 1)) / 2;
   size_t k = 0;
 
   Edge **edges = edge_array_new(qtd_edges);
 
-  for (size_t i = 0; i < qtd_cities; i++) {
-    for (size_t j = i + 1; j < qtd_cities; j++) {
-      double distance = city_calculate_distance(cities[i], cities[j]);
+  for (uint16_t i = 0; i < qtd_cities; i++) {
+    for (uint16_t j = i + 1; j < qtd_cities; j++) {
+      printf("i = %hu, j = %hu\n", i, j);
+
+      float distance = city_calculate_distance(cities[i], cities[j]);
       edges[k++] = edge_new(city_id(cities[i]), city_id(cities[j]), distance);
     }
+    city_free(cities[i]);
   }
 
   return edges;
 }
 
-Edge **kruskal(size_t vertices, Edge **edges, size_t qtd_edges) {
+Edge **kruskal(uint16_t vertices, Edge **edges, size_t qtd_edges) {
+  printf("start kruskal...\n");
   Uf *uf_set = uf_init(vertices);
   Edge **mst = edge_array_new(vertices);
-  size_t e = 0, i = 0;
+  size_t i = 0;
+  uint16_t e = 0;
 
   // evaluate until we got a complete tree or there is no elements left
   while ((e < (vertices - 1)) && i < qtd_edges) {
@@ -124,13 +130,14 @@ Edge **kruskal(size_t vertices, Edge **edges, size_t qtd_edges) {
   return mst;
 }
 
-void save_mst(FILE *f, Edge **mst, const char *problem_name, size_t dimension) {
+void save_mst(FILE *f, Edge **mst, const char *problem_name,
+              uint16_t dimension) {
   fprintf(f, "NAME: %s\n", problem_name);
   fprintf(f, "TYPE: MST\n");
-  fprintf(f, "DIMENSION: %zu\n", dimension);
+  fprintf(f, "DIMENSION: %hu\n", dimension);
   fprintf(f, "MST_SECTION\n");
   for (size_t i = 0; i < dimension - 1; i++) {
-    fprintf(f, "%zu %zu\n", edge_origin_id(mst[i]),
+    fprintf(f, "%hu %hu\n", edge_origin_id(mst[i]),
             edge_destination_id(mst[i]));
   }
   fprintf(f, "EOF");
