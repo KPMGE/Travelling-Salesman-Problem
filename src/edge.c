@@ -6,7 +6,7 @@
 #include "../include/edge.h"
 
 struct edge {
-  size_t origin_id, destination_id;
+  uint16_t origin_id, destination_id;
   float distance;
 };
 

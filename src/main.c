@@ -28,6 +28,7 @@ int main(int argc, char *argv[]) {
   uint16_t dim2 = dim - 1;
   size_t qtd_edges = (dim2 * (dim2 + 1)) / 2;
 
+  printf("sort edges...");
   sort_edges(edges, qtd_edges);
   Edge **mst = kruskal(dim, edges, qtd_edges);
 
