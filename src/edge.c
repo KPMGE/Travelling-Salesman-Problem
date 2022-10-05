@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -5,24 +6,36 @@
 #include "../include/edge.h"
 
 struct edge {
-  City *origin, *destination;
-  double distance;
+  uint16_t origin_id, destination_id;
+  float distance;
 };
 
-Edge *edge_new(City *origin, City *destination, double distance) {
+Edge *edge_new(uint16_t origin_id, uint16_t destination_id, float distance) {
   Edge *e = malloc(sizeof(Edge));
-  e->origin = origin;
-  e->destination = destination;
+  e->origin_id = origin_id;
+  e->destination_id = destination_id;
   e->distance = distance;
   return e;
 }
 
-City *edge_origin(Edge *e) { return e->origin; }
+uint16_t edge_origin_id(Edge *e) { return e->origin_id; }
 
-City *edge_destination(Edge *e) { return e->destination; }
+uint16_t edge_destination_id(Edge *e) { return e->destination_id; }
 
-double edge_distance(Edge *e) { return e->distance; }
+float edge_distance(Edge *e) { return e->distance; }
 
-void edge_free(Edge *e) { free(e); }
+void edge_free(Edge *e) {
+  assert(e != NULL && "edge must not be NULL");
+  free(e);
+}
 
-size_t edge_size() { return sizeof(Edge); }
+Edge **edge_array_new(size_t n) { return malloc(n * sizeof(Edge)); }
+
+void edges_free(Edge **edges, size_t qtd_edges) {
+  assert(edges != NULL && "edges must not be NULL");
+
+  for (size_t i = 0; i < qtd_edges; i++) {
+    edge_free(edges[i]);
+  }
+  free(edges);
+}

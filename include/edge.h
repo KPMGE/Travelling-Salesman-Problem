@@ -2,14 +2,16 @@
 #define EDGE_H
 
 #include "city.h"
+#include <stdint.h>
 
 typedef struct edge Edge;
 
-Edge *edge_new(City *origin, City *destination, double distance);
-City *edge_origin(Edge *e);
-City *edge_destination(Edge *e);
-double edge_distance(Edge *e);
-size_t edge_size();
+Edge *edge_new(uint16_t origin_id, uint16_t destination_id, float distance);
+uint16_t edge_origin_id(Edge *e);
+uint16_t edge_destination_id(Edge *e);
+Edge **edge_array_new(size_t n);
+float edge_distance(Edge *e);
 void edge_free(Edge *e);
+void edges_free(Edge **edges, size_t qtd_edges);
 
 #endif // !EDGE_H
