@@ -7,6 +7,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+void compute_tour(Edge **mst, int mst_size) {
+int idx = 0;
+Edge *elem = mst[0];
+int *arr = malloc(sizeof(int) * (mst_size * 2));
+
+while (idx < (2 * mst_size)) {
+  int origin_id = edge_origin_id(elem);
+  int destination_id = edge_destination_id(elem);
+  arr[idx++] = origin_id; 
+  arr[idx++] = destination_id;
+
+  printf("elem: (%d %d)\n", origin_id, destination_id);
+
+  // find the mst that has th destination_id
+  for (int i = 0; i < mst_size; i++) {
+    if (!mst[i]) continue;
+    if (edge_origin_id(elem) == edge_origin_id(mst[i]) && edge_destination_id(elem) == edge_destination_id(mst[i])) {
+      continue;
+    } 
+    if (edge_origin_id(elem) == edge_origin_id(mst[i])) {
+      elem = mst[i];
+      mst[i] = NULL;
+      break;
+    }
+    if (edge_destination_id(elem) == edge_destination_id(mst[i])) {
+      elem = mst[i];
+      mst[i] = NULL;
+      break;
+    }
+    if (edge_destination_id(elem) == edge_origin_id(mst[i])) {
+      elem = mst[i];
+      mst[i] = NULL;
+      break;
+    }
+  }
+}
+
+printf("cities: ");
+  for (int i = 0; i < (2 * mst_size); i++) {
+    printf("%d\n", arr[i]);
+  }
+}
+
 int main(int argc, char *argv[]) {
   const char *file_path = argv[1];
   FILE *f = fopen(file_path, "r");
