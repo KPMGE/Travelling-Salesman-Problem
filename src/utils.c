@@ -89,14 +89,12 @@ Edge **compute_edges(City **cities, uint16_t qtd_cities) {
 
   for (uint16_t i = 0; i < qtd_cities; i++) {
     for (uint16_t j = i + 1; j < qtd_cities; j++) {
-      printf("i = %hu, j = %hu\n", i, j);
-
       distance = city_calculate_distance(cities[i], cities[j]);
       edges[k++] = edge_new(city_id(cities[i]), city_id(cities[j]), distance);
     }
     city_free(cities[i]);
   }
-  
+
   free(cities);
 
   return edges;
