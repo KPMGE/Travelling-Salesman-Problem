@@ -8,3 +8,5 @@ formula of integer sum up to N: https://www.vedantu.com/question-answer/the-form
 fseek function: https://www.tutorialspoint.com/c_standard_library/c_function_fseek.htm
 qsort function: https://stackoverflow.com/questions/3489139/how-to-qsort-an-array-of-pointers-to-char-in-c
 How to Code Combinations Using Recursion: https://www.youtube.com/watch?v=NA2Oj9xqaZQ
+DFS algorithm in C: https://www.programiz.com/dsa/graph-dfs
+Gdb manual: https://sourceware.org/gdb/download/onlinedocs/gdb/Continuing-and-Stepping.html
