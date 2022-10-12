@@ -61,5 +61,5 @@ valgrind:
 clean:
 	@ echo "\033[1;35m"
 	@ echo "Removing temporary files..."
-	@ rm -rf $(OBJ) $(NAME_PROGRAM) $(BIN)
+	@ rm -rf $(OBJ) $(NAME_PROGRAM) $(BIN) *.mst *.tour
 	@ echo "\033[0m"
