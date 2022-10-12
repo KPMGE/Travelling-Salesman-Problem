@@ -1,5 +1,6 @@
 #include "../include/utils.h"
 #include "../include/city.h"
+#include "../include/graph.h"
 #include "../include/union_find.h"
 #include <assert.h>
 #include <stdio.h>
@@ -139,4 +140,22 @@ void save_mst(FILE *f, Edge **mst, const char *problem_name,
             edge_destination_id(mst[i]));
   }
   fprintf(f, "EOF");
+}
+
+void save_tour(Edge **mst, uint16_t mst_size, const char *problem_name,
+               FILE *tour_file) {
+  const uint16_t start_city_id = 1;
+  Graph *g = graph_new(mst_size);
+  for (int i = 0; i < mst_size - 1; i++) {
+    graph_edge_new(g, (edge_origin_id(mst[i]) - 1),
+                   (edge_destination_id(mst[i]) - 1));
+  }
+
+  fprintf(tour_file, "NAME: %s\n", problem_name);
+  fprintf(tour_file, "TYPE: TOUR\n");
+  fprintf(tour_file, "DIMENSION: %hu\n", mst_size);
+  fprintf(tour_file, "TOUR_SECTION\n");
+  dfs(g, start_city_id, tour_file);
+  fprintf(tour_file, "EOF");
+  graph_free(g, mst_size);
 }
