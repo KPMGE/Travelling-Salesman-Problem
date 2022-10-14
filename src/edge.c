@@ -29,7 +29,7 @@ void edge_free(Edge *e) {
   free(e);
 }
 
-Edge **edge_array_new(size_t n) { return malloc(n * sizeof(Edge)); }
+Edge **edge_array_new(size_t n) { return malloc(n * sizeof(Edge *)); }
 
 void edges_free(Edge **edges, size_t qtd_edges) {
   assert(edges != NULL && "edges must not be NULL");
