@@ -19,7 +19,6 @@ int main(int argc, char *argv[]) {
   // get all cities
   City **cities = parse_cities(f);
   // compute the edges between all cities
-
   Edge **edges = compute_edges(cities, dim);
   // obtain the actual amount of edges
   uint16_t dim2 = dim - 1;
