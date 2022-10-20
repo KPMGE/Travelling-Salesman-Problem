@@ -29,7 +29,3 @@ Now you can run the program by simply doing:
 - [x] Create **UnionFind** TAD.
 - [x] Implement kruskal algorithm to compute *MST*
 - [x] Save mst to a file and see if it works properly
-
-### Issues
-- [ ] For large files, the algorithm is slow
-- [ ] For large files, there is some core dumps
