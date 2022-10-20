@@ -7,16 +7,39 @@
 #include <stdlib.h>
 #include <string.h>
 
-static int compare_edges_by_distance(const void *a, const void *b) {
-  Edge *e1 = *(Edge **)a;
-  Edge *e2 = *(Edge **)b;
-  const float d1 = edge_distance(e1);
-  const float d2 = edge_distance(e2);
-  if (d1 > d2)
-    return 1;
-  if (d1 == d2)
-    return 0;
-  return -1;
+#define SWAP(type, a, b)                                                       \
+  {                                                                            \
+    type temp = a;                                                             \
+    a = b;                                                                     \
+    b = temp;                                                                  \
+  }
+
+void quick_sort(float *arr, uint16_t first, uint16_t last, uint16_t *id_pairs) {
+  uint16_t i, j, pivot;
+
+  if (first < last) {
+    pivot = first;
+    i = first;
+    j = last;
+    while (i < j) {
+      while (arr[i] <= arr[pivot] && i < last)
+        i++;
+      while (arr[j] > arr[pivot])
+        j--;
+      if (i < j) {
+        SWAP(float, arr[i], arr[j]);
+        SWAP(float, ORIGIN_ID(id_pairs, i), ORIGIN_ID(id_pairs, j));
+        SWAP(float, DESTINATION_ID(id_pairs, i), DESTINATION_ID(id_pairs, j));
+      }
+    }
+
+    SWAP(float, arr[pivot], arr[j]);
+    SWAP(int, ORIGIN_ID(id_pairs, pivot), ORIGIN_ID(id_pairs, j));
+    SWAP(int, DESTINATION_ID(id_pairs, pivot), DESTINATION_ID(id_pairs, j));
+
+    quick_sort(arr, first, j - 1, id_pairs);
+    quick_sort(arr, j + 1, last, id_pairs);
+  }
 }
 
 static void skip_lines(FILE *f, size_t n) {
@@ -69,36 +92,39 @@ uint16_t parse_dimension(FILE *f) {
   return dimension;
 }
 
-void sort_edges(Edge **edges, size_t qtd_edges) {
-  // as the size of pointers in C is always the same, and we're expecting a
-  // ponter to edge, its fine to use it like this!
-  const size_t pointer_size = sizeof(void *);
-  qsort(edges, qtd_edges, pointer_size, compare_edges_by_distance);
-}
-
-Edge **compute_edges(City **cities, uint16_t qtd_cities) {
+uint16_t *compute_edges(City **cities, uint16_t qtd_cities) {
   assert(cities != NULL && "Cities must not be null");
   // formula for the sum of the first n natural numbers
   // NOTE: the actual number that we wanna compute is the sum of (qtd_cities -
   // 1)
   uint16_t n = qtd_cities - 1;
   size_t qtd_edges = (n * (n + 1)) / 2;
-  size_t k = 0;
-  float distance = 0;
+  size_t k = 0, z = 0;
 
-  Edge **edges = edge_array_new(qtd_edges);
+  // array to hold pairs of city ids
+  uint16_t *id_pairs = malloc(sizeof(uint16_t) * 2 * qtd_edges);
+  // array of city distances
+  float *distances = malloc(sizeof(float) * qtd_edges);
 
+  // calculate all the combinations between the cities
   for (uint16_t i = 0; i < qtd_cities; i++) {
     for (uint16_t j = i + 1; j < qtd_cities; j++) {
-      distance = city_calculate_distance(cities[i], cities[j]);
-      edges[k++] = edge_new(city_id(cities[i]), city_id(cities[j]), distance);
+      // saves distance in the kth position
+      distances[k++] = city_calculate_distance(cities[i], cities[j]);
+      // saves origin and destination ids
+      id_pairs[z++] = city_id(cities[i]);
+      id_pairs[z++] = city_id(cities[j]);
     }
     city_free(cities[i]);
   }
 
-  free(cities);
+  // sort edges
+  quick_sort(distances, 0, qtd_edges - 1, id_pairs);
 
-  return edges;
+  free(cities);
+  free(distances);
+
+  return id_pairs;
 }
 
 Edge **kruskal(uint16_t vertices, Edge **edges, size_t qtd_edges) {
