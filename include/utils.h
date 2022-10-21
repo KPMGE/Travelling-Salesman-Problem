@@ -2,7 +2,6 @@
 #define UTILS_H
 
 #include "city.h"
-#include "edge.h"
 #include <stdint.h>
 
 #define ORIGIN_ID(arr, pos) arr[2 * pos]

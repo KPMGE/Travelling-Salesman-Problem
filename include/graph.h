@@ -1,7 +1,6 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "./edge.h"
 #include <stdint.h>
 #include <stdio.h>
 
