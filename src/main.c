@@ -31,14 +31,21 @@ int main(int argc, char *argv[]) {
   // compute mst
   uint16_t *mst = kruskal(dimension_from_file, edges, qtd_edges);
 
-  // save tour
-  FILE *tour_file = fopen("test.tour", "w");
-  assert(f != NULL && "Could not create mst file");
+  // gets the problem name
   char *problem_name = parse_problem_name(f);
+
+  // creates names for mst and tour output files
+  char mst_file_name[250], tour_file_name[250];
+  sprintf(mst_file_name, "%s.mst", problem_name);
+  sprintf(tour_file_name, "%s.tour", problem_name);
+
+  // save tour
+  FILE *tour_file = fopen(tour_file_name, "w");
+  assert(f != NULL && "Could not create mst file");
   save_tour(mst, dimension_from_file, problem_name, tour_file);
 
   // save mst
-  FILE *mst_file = fopen("test.mst", "w");
+  FILE *mst_file = fopen(mst_file_name, "w");
   assert(f != NULL && "Could not create mst file");
   save_mst(mst_file, mst, problem_name, dimension_from_file);
 
