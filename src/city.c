@@ -33,7 +33,7 @@ float city_calculate_distance(City *c1, City *c2) {
   return sqrt(pow(dx, 2) + pow(dy, 2));
 }
 
-City **city_array_new(uint16_t n) { return malloc(n * sizeof(City)); }
+City **city_array_new(uint16_t n) { return malloc(n * sizeof(City *)); }
 
 void cities_free(City **cities, uint16_t qtd_cities) {
   assert(cities != NULL && "cities must not be NULL");

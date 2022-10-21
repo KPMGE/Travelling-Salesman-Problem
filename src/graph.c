@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 typedef struct node {
-  int vertex;
+  uint16_t vertex;
   struct node *next;
 } Node;
 

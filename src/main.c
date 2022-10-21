@@ -1,5 +1,4 @@
 #include "../include/city.h"
-#include "../include/edge.h"
 #include "../include/graph.h"
 #include "../include/union_find.h"
 #include "../include/utils.h"
@@ -14,33 +13,44 @@ int main(int argc, char *argv[]) {
   assert(f != NULL && "Could not open file");
 
   // dimension of the matrix
-  uint16_t dim = parse_dimension(f);
-  printf("dimension: %hu\n", dim);
+  uint16_t dimension_from_file = parse_dimension(f);
+
   // get all cities
   City **cities = parse_cities(f);
+
   // compute the edges between all cities
+  uint16_t *edges = compute_edges(cities, dimension_from_file);
 
-  Edge **edges = compute_edges(cities, dim);
-  // obtain the actual amount of edges
-  uint16_t dim2 = dim - 1;
-  size_t qtd_edges = (dim2 * (dim2 + 1)) / 2;
+  // as the dimension from the file starts at 1, but on our program we 
+  // wish to use it starting from 0, we must adjust it subtracting 1.
+  uint16_t dimension_for_program = dimension_from_file - 1;
 
-  sort_edges(edges, qtd_edges);
-  Edge **mst = kruskal(dim, edges, qtd_edges);
+  // calculate amount of edges
+  size_t qtd_edges = (dimension_for_program * (dimension_for_program + 1)) / 2;
+
+  // compute mst
+  uint16_t *mst = kruskal(dimension_from_file, edges, qtd_edges);
+
+  // gets the problem name
+  char *problem_name = parse_problem_name(f);
+
+  // creates names for mst and tour output files
+  char mst_file_name[250], tour_file_name[250];
+  sprintf(mst_file_name, "%s.mst", problem_name);
+  sprintf(tour_file_name, "%s.tour", problem_name);
 
   // save tour
-  FILE *tour_file = fopen("test.tour", "w");
+  FILE *tour_file = fopen(tour_file_name, "w");
   assert(f != NULL && "Could not create mst file");
-  char *problem_name = parse_problem_name(f);
-  save_tour(mst, dim, problem_name, tour_file);
+  save_tour(mst, dimension_from_file, problem_name, tour_file);
 
   // save mst
-  FILE *mst_file = fopen("test.mst", "w");
+  FILE *mst_file = fopen(mst_file_name, "w");
   assert(f != NULL && "Could not create mst file");
-  save_mst(mst_file, mst, problem_name, dim);
+  save_mst(mst_file, mst, problem_name, dimension_from_file);
 
   // clean up memorry
-  edges_free(edges, qtd_edges);
+  free(edges);
   free(mst);
   fclose(f);
   free(problem_name);
